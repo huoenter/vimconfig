@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/home/huoc/Projects/testassist/subjects/Sudoku/test/randoop'
+let g:netrw_dirhist_2='/home/huoc/Projects/testassist/subjects/lib'
+let g:netrw_dirhist_3='/home/huoc/Projects/testassist/subjects/Barbecue/test'

@@ -1,0 +1,2 @@
+. .bashrc
+PATH=$PATH:/home/huoc/bin:/home/huoc/pinhome/pin
