@@ -12,6 +12,7 @@ set tabstop=4
 "filetype plugin on
 set mouse=a
 set ai
+set bg=dark
 "inoremap ( ()<Esc>i
 noremap H ^
 noremap L $
