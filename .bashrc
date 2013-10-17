@@ -115,3 +115,4 @@ alias dytan_checkinline="sudo ../pin-2.12-56759-gcc.4.4.7-linux/pin.sh -log_inli
 alias testdytan="sudo $PINHOME/pin.sh -appdebug -t $DYTANHOME/build/dytan.so -- " 
 alias dytan="sudo $PINHOME/pin.sh -t $DYTANHOME/build/dytan.so -- " 
 alias dytanlog="sudo ../pin-2.12-56759-gcc.4.4.7-linux/pin.sh -t ./build/dytan.so -o count.log -- " 
+alias back="cd ../../../../.."

@@ -1,4 +1,7 @@
 filetype on
+filetype plugin on
+autocmd FileType java ab println System.out.println(""); 
+
 ab #d #define
 ab #i #include
 
@@ -40,4 +43,4 @@ au! Syntax gdb source ~/.vim/gdb.vim
 au BufRead,BufNewFile *.scala set filetype=scala
 au! Syntax scala source ~/.vim/scala.vim
 au FileType java set tags=~/.java_tags
-set complete=.,w,b,u,t,i 
+"set complete=.,w,b,u,t,i 

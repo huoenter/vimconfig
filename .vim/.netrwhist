@@ -1,5 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/home/huoc/Projects/testassist/subjects/Sudoku/test/randoop'
 let g:netrw_dirhist_2='/home/huoc/Projects/testassist/subjects/lib'
 let g:netrw_dirhist_3='/home/huoc/Projects/testassist/subjects/Barbecue/test'
+let g:netrw_dirhist_4='/home/huoc/Projects/testassist/subjects/Barbecue'
+let g:netrw_dirhist_5='/home/huoc/Projects/testassist/mutual_analyzer/build'
+let g:netrw_dirhist_6='/home/huoc/Projects/testassist/testassist-jpf/build'
+let g:netrw_dirhist_7='/home/huoc/Projects/testassist/subjects/Employee'
+let g:netrw_dirhist_8='/home/huoc/Projects/testassist/testassist-jpf'
