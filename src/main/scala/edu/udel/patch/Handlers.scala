@@ -1,30 +1,52 @@
 package edu.udel.patch
 
-import com.sun.jdi.request.EventRequest
-import com.sun.jdi.event.ClassPrepareEvent
-import scala.collection.JavaConversions._
-import com.sun.jdi.event.AccessWatchpointEvent
-import com.sun.jdi.event.Event
+import scala.collection.JavaConversions.asScalaBuffer
 
-case class EventHandler(f: Function1[Event, Unit])
+import com.sun.jdi.event.AccessWatchpointEvent
+import com.sun.jdi.event.ClassPrepareEvent
+import com.sun.jdi.event.Event
+import com.sun.jdi.event.MethodEntryEvent
+import com.sun.jdi.event.MethodExitEvent
+import com.sun.jdi.event.ModificationWatchpointEvent
+
+import edu.udel.patch.trace.FieldAccess
+import edu.udel.patch.trace.FieldModification
+import edu.udel.patch.trace.MethodExit
+import edu.udel.patch.trace.MethodInvocation
+import edu.udel.patch.trace.Observation
+import edu.udel.patch.trace.OtherEvents
+import scala.collection.JavaConversions._
+
+case class EventHandler(f: Function1[Event, Observation])
 
 object EventHandler {
 	val clsPrepHandler = (event: Event) => {
 	    val e = event.asInstanceOf[ClassPrepareEvent]
-	    e.referenceType.allFields foreach WPInstaller.install
+	    println(e.referenceType.name)
+	    e.referenceType.fields foreach Installer.install
+//	    e.referenceType.methods foreach Installer.install
+	    Installer.install(e.referenceType.methods.head)
+	    
+	    new OtherEvents(e)
 	}
 	
 	val fieldAccessHandler = (event: Event) => {
 	    val e = event.asInstanceOf[AccessWatchpointEvent]
-	    
-	    val field = e.field
-	    
-	    if (e.`object`()==null) {
-	    	println("Accessing %s.%s @ %s\n" format (field.declaringType.name, field.name, e.location))
-	    }
-	    else {
-	        val obj = e.`object`
-	        println("Accessing %s[%d].%s @ %s\n" format (obj.referenceType.name, obj.uniqueID, field.name, e.location))
-	    }
+	    new FieldAccess(e)
+	}
+	
+	val fieldModificationHandler = (event: Event) => {
+	    val e = event.asInstanceOf[ModificationWatchpointEvent]
+		new FieldModification(e)    
+	}
+
+	val methodEntryHandler = (event: Event) => {
+	    val e = event.asInstanceOf[MethodEntryEvent]
+		new MethodInvocation(e)    
+	}
+
+	val methodExitHandler = (event: Event) => {
+	    val e = event.asInstanceOf[MethodExitEvent]
+	    new MethodExit(e)
 	}
 }
