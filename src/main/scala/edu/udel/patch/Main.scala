@@ -8,19 +8,20 @@ import scala.collection.JavaConversions._
 import com.sun.jdi.event.VMDisconnectEvent
 import com.sun.jdi.event.ClassPrepareEvent
 import edu.udel.patch.EventHandler._
+import edu.udel.patch.util.Config._
+import edu.udel.patch.Installer._
 
 object Main {
     def main(args: Array[String]) = {
-        val target = "edu.udel.patch.test.Test1"
+        val target = "commons-cli2"
         //        val target = args(1)
 
-        val vm = new VirtualMachineLauncher().setOptions("-cp /home/huoc/Projects/scala/patch/target/scala-2.11/classes").setMain(target).launch()
+        val vm = new VirtualMachineLauncher().
+            setOptions("-cp " + junitLib + ":" + subCP + target + "/bin").setMain(junitMain + " " + testClass1).launch()
 
-        val classPrepareRequest = vm.eventRequestManager().createClassPrepareRequest()
-
-        classPrepareRequest.putProperty(classOf[EventHandler], EventHandler(clsPrepHandler))
-        addExclusions(classPrepareRequest)
-        classPrepareRequest.enable()
+        createCPE(vm)
+        createApplicationMethodEvents(vm)
+        createAssertionEvents(vm)
 
         //        vm.resume()
 

@@ -19,13 +19,15 @@ sealed trait Observation {
     }
 }
 
-case class OtherEvents(e: Event) extends Observation
+case class OtherEvents(e: Event) extends Observation {
+    override def toString = ""
+}
 
 case class MethodInvocation(e: MethodEntryEvent) extends Observation {
-    override def toString = "\nEnter method: " + e.method.name
+    override def toString = "\nEnter method: " + e.method
 }
 case class MethodExit(e: MethodExitEvent) extends Observation {
-    override def toString = "\nExit method: " + e.method.name
+    override def toString = "\nExit method: " + e.method
 }
 
 case class FieldAccess(e: AccessWatchpointEvent) extends Observation {

@@ -9,7 +9,7 @@ import com.sun.jdi.request.ClassPrepareRequest
 
 object Types {
     type VM = VirtualMachine
-    val exclusives = List("java.*", "sun.*", "com.sun.*")
+    val exclusives = List("java.*", "sun.*", "com.sun.*", "org.junit.*", "junit.*")
     def addExclusions(eq: EventRequest) = eq match {
         case wp: WatchpointRequest   => exclusives foreach wp.addClassExclusionFilter
         case cp: ClassPrepareRequest => exclusives foreach cp.addClassExclusionFilter

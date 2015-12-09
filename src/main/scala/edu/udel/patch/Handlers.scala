@@ -25,7 +25,6 @@ object EventHandler {
 	    println(e.referenceType.name)
 	    e.referenceType.fields foreach Installer.install
 //	    e.referenceType.methods foreach Installer.install
-	    Installer.install(e.referenceType.methods.head)
 	    
 	    new OtherEvents(e)
 	}
@@ -48,5 +47,21 @@ object EventHandler {
 	val methodExitHandler = (event: Event) => {
 	    val e = event.asInstanceOf[MethodExitEvent]
 	    new MethodExit(e)
+	}
+
+	val assertEntryHandler = (event: Event) => {
+	    val e = event.asInstanceOf[MethodEntryEvent]
+	    if (e.method.name startsWith "assert")
+			new MethodInvocation(e)    
+	    else
+	        new OtherEvents(e)
+	}
+
+	val assertExitHandler = (event: Event) => {
+	    val e = event.asInstanceOf[MethodExitEvent]
+	    if (e.method.name startsWith "assert")
+			new MethodExit(e)    
+	    else
+	        new OtherEvents(e)
 	}
 }
