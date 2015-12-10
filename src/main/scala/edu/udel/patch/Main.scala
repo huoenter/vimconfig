@@ -10,6 +10,8 @@ import com.sun.jdi.event.ClassPrepareEvent
 import edu.udel.patch.EventHandler._
 import edu.udel.patch.util.Config._
 import edu.udel.patch.Installer._
+import edu.udel.patch.trace.Observation
+import com.sun.jdi.VMDisconnectedException
 
 object Main {
     def main(args: Array[String]) = {
@@ -19,21 +21,26 @@ object Main {
         val vm = new VirtualMachineLauncher().
             setOptions("-cp " + junitLib + ":" + subCP + target + "/bin").setMain(junitMain + " " + testClass1).launch()
 
-        createCPE(vm)
+        createFieldCPE(vm)
+        createTestCPE(vm)
         createApplicationMethodEvents(vm)
-        createAssertionEvents(vm)
+        //        createAssertionEvents(vm)
 
         //        vm.resume()
 
         val evtQueue = vm.eventQueue
 
-        while (true) {
+        var lst = List[Observation]()
+        var connected = true
+
+        while (connected) {
             val evtSet = evtQueue.remove
             for (event <- evtSet.eventIterator) {
+                if (event != null && event.isInstanceOf[VMDisconnectEvent]) connected = false
                 Option(event.request) match {
                     case Some(req) => {
                         req.getProperty(classOf[EventHandler]) match {
-                            case h: EventHandler => println(h.f(event))
+                            case h: EventHandler => {val ob = h.f(event); lst = ob :: lst}
                         }
                     }
                     case None =>
@@ -41,5 +48,7 @@ object Main {
             }
             evtSet.resume()
         }
+        
+        lst foreach println
     }
 }

@@ -25,11 +25,19 @@ object Installer {
         modificationRequest.enable()
     }
     
-    def createCPE(vm: VirtualMachine) = {
+    def createFieldCPE(vm: VirtualMachine) = {
         val classPrepareRequest = vm.eventRequestManager().createClassPrepareRequest()
 
-        classPrepareRequest.putProperty(classOf[EventHandler], EventHandler(clsPrepHandler))
+        classPrepareRequest.putProperty(classOf[EventHandler], EventHandler(fieldPrepHandler))
         addExclusions(classPrepareRequest)
+        classPrepareRequest.enable()
+    }
+
+    def createTestCPE(vm: VirtualMachine) = {
+        val classPrepareRequest = vm.eventRequestManager().createClassPrepareRequest()
+
+        classPrepareRequest.putProperty(classOf[EventHandler], EventHandler(testPrepHandler))
+        classPrepareRequest.addClassFilter("junit.framework.TestCase")
         classPrepareRequest.enable()
     }
     
@@ -61,10 +69,5 @@ object Installer {
         exitRequest.putProperty(classOf[EventHandler], EventHandler(assertExitHandler))
         exitRequest.addClassFilter("junit.framework.Assert")
         exitRequest.enable()
-    }
-
-    def install(m: Method) = {
-        println("add method request " + m)
-        val vm = m.virtualMachine
     }
 }

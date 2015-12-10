@@ -6,6 +6,7 @@ import com.sun.jdi.request.WatchpointRequest
 import com.sun.jdi.request.MethodEntryRequest
 import com.sun.jdi.request.MethodExitRequest
 import com.sun.jdi.request.ClassPrepareRequest
+import com.sun.jdi.ReferenceType
 
 object Types {
     type VM = VirtualMachine
@@ -17,4 +18,6 @@ object Types {
         case mx: MethodExitRequest   => exclusives foreach mx.addClassExclusionFilter
         case _                       =>
     }
+    
+    var testTypes = List[ReferenceType]()
 }

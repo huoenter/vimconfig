@@ -2,6 +2,7 @@ package edu.udel.patch
 
 import scala.collection.JavaConversions.asScalaBuffer
 
+
 import com.sun.jdi.event.AccessWatchpointEvent
 import com.sun.jdi.event.ClassPrepareEvent
 import com.sun.jdi.event.Event
@@ -16,17 +17,25 @@ import edu.udel.patch.trace.MethodInvocation
 import edu.udel.patch.trace.Observation
 import edu.udel.patch.trace.OtherEvents
 import scala.collection.JavaConversions._
+import edu.udel.patch.util.Types
 
 case class EventHandler(f: Function1[Event, Observation])
 
 object EventHandler {
-	val clsPrepHandler = (event: Event) => {
+	val fieldPrepHandler = (event: Event) => {
 	    val e = event.asInstanceOf[ClassPrepareEvent]
 	    println(e.referenceType.name)
 	    e.referenceType.fields foreach Installer.install
 //	    e.referenceType.methods foreach Installer.install
 	    
-	    new OtherEvents(e)
+	    OtherEvents
+	}
+	
+	val testPrepHandler = (event: Event) => {
+	    val e = event.asInstanceOf[ClassPrepareEvent]
+	    println(e.referenceType.name)
+	    Types.testTypes ::= e.referenceType()
+	    OtherEvents
 	}
 	
 	val fieldAccessHandler = (event: Event) => {
@@ -54,7 +63,7 @@ object EventHandler {
 	    if (e.method.name startsWith "assert")
 			new MethodInvocation(e)    
 	    else
-	        new OtherEvents(e)
+	        OtherEvents
 	}
 
 	val assertExitHandler = (event: Event) => {
@@ -62,6 +71,6 @@ object EventHandler {
 	    if (e.method.name startsWith "assert")
 			new MethodExit(e)    
 	    else
-	        new OtherEvents(e)
+	        OtherEvents
 	}
 }
