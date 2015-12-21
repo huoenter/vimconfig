@@ -15,4 +15,5 @@ unmanagedJars in Compile ~= {uj =>
     Seq(Attributed.blank(file(System.getProperty("java.home").dropRight(3)+"lib/tools.jar"))) ++ uj
 	}
 
-libraryDependencies ++= Seq("com.typesafe" % "config" % "0.5.+")
+libraryDependencies ++= Seq("com.typesafe" % "config" % "0.5.+",
+							"gnu.getopt" % "java-getopt" % "1.0.13")
