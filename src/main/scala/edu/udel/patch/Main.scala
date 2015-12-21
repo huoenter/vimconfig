@@ -12,6 +12,7 @@ import edu.udel.patch.util.Config._
 import edu.udel.patch.Installer._
 import edu.udel.patch.trace.Observation
 import com.sun.jdi.VMDisconnectedException
+import edu.udel.patch.trace.MethodInvocation
 
 object Main {
     def main(args: Array[String]) = {
@@ -30,7 +31,6 @@ object Main {
 
         val evtQueue = vm.eventQueue
 
-        var lst = List[Observation]()
         var connected = true
 
         while (connected) {
@@ -40,7 +40,7 @@ object Main {
                 Option(event.request) match {
                     case Some(req) => {
                         req.getProperty(classOf[EventHandler]) match {
-                            case h: EventHandler => {val ob = h.f(event); lst = ob :: lst}
+                            case h: EventHandler => h.f(event)
                         }
                     }
                     case None =>
@@ -49,6 +49,5 @@ object Main {
             evtSet.resume()
         }
         
-        lst foreach println
     }
 }

@@ -29,7 +29,8 @@ object H {
         case _                    => None
     }
 
-    def isTest(refType: ReferenceType) = refType.compareTo(Types.testTypes(0)) < 0
+//    def isTest(refType: ReferenceType) = refType.compareTo(Types.testTypes(0)) < 0
+    def isTest(m: Method) = (m.name startsWith "test") && (m.returnTypeName equals "void")
 }
 
 trait Observation 
@@ -38,22 +39,22 @@ object OtherEvents extends Observation {
 }
 
 case class MethodInvocation(objRef: ObjectReference, m: Method, isTest: Boolean) extends Observation {
-    def this(objRef: ObjectReference, m: Method) = this(objRef, m, if (objRef != null) H.isTest(objRef.referenceType) else false)
+    def this(objRef: ObjectReference, m: Method) = this(objRef, m, H.isTest(m))
     def this(e: MethodEntryEvent) = this(H.getObjectReference(e).get, e.method)
 
     override def toString = "\nEnter method: " + m
 }
 
 case class MethodExit(objRef: ObjectReference, m: Method, isTest: Boolean) extends Observation {
-    def this(objRef: ObjectReference, m: Method) = this(objRef, m, if (objRef != null) H.isTest(objRef.referenceType) else false)
+    def this(objRef: ObjectReference, m: Method) = this(objRef, m, H.isTest(m))
     def this(e: MethodExitEvent) = this(H.getObjectReference(e).get, e.method)
 
     override def toString = "\nExit method: " + m
 }
 
 
-case class FieldAccess(objRef: ObjectReference, refType: ReferenceType, val f: Field, val loc: Location) extends Observation {
-    def this(objRef: ObjectReference, f: Field, loc: Location) = this(objRef, if(objRef!=null)objRef.referenceType else null, f, loc)
+case class FieldAccess(objRef: ObjectReference, refType: ReferenceType, val f: Field, val loc: String) extends Observation {
+    def this(objRef: ObjectReference, f: Field, loc: Location) = this(objRef, if(objRef!=null)objRef.referenceType else null, f, loc.toString)
     def this(e: AccessWatchpointEvent) = this(e.`object`(), e.field, e.location)
 
     override def toString = {
@@ -64,8 +65,8 @@ case class FieldAccess(objRef: ObjectReference, refType: ReferenceType, val f: F
     }
 }
 
-case class FieldModification(objRef: ObjectReference, refType: ReferenceType, val f: Field, val loc: Location) extends Observation {
-    def this(objRef: ObjectReference, f: Field, loc: Location) = this(objRef, if(objRef!=null)objRef.referenceType else null, f, loc)
+case class FieldModification(objRef: ObjectReference, refType: ReferenceType, val f: Field, val loc: String) extends Observation {
+    def this(objRef: ObjectReference, f: Field, loc: Location) = this(objRef, if(objRef!=null)objRef.referenceType else null, f, loc.toString)
     def this(e: ModificationWatchpointEvent) = this(e.`object`(), e.field, e.location)
 
     override def toString = {
