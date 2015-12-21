@@ -14,7 +14,7 @@ import com.ibm.wala.types.MethodReference
 import com.ibm.wala.types.TypeReference
 import com.ibm.wala.util.strings.Atom
 
-object Types {
+object WTypes {
 	type BB = ISSABasicBlock
 	type I = SSAInstruction
 	type InvokeI = SSAInvokeInstruction
