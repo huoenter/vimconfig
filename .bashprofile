@@ -1,2 +1,2 @@
-. .bashrc
-PATH=$PATH:/home/huoc/bin:/home/huoc/pinhome/pin
+export JAVA_HOME=$(/usr/libexec/java_home)
+PATH=$PATH:~/bin:/home/huoc/pinhome/pin

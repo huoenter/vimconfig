@@ -109,10 +109,9 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-PINHOME=~/Projects/pin-2.12-56759-gcc.4.4.7-linux/
-DYTANHOME=~/Projects/dytan/
-alias dytan_checkinline="sudo ../pin-2.12-56759-gcc.4.4.7-linux/pin.sh -log_inline -t $DYTANHOME/build/dytan.so -- " 
-alias testdytan="sudo $PINHOME/pin.sh -appdebug -t $DYTANHOME/build/dytan.so -- " 
-alias dytan="sudo $PINHOME/pin.sh -t $DYTANHOME/build/dytan.so -- " 
-alias dytanlog="sudo ../pin-2.12-56759-gcc.4.4.7-linux/pin.sh -t ./build/dytan.so -o count.log -- " 
 alias back="cd ../../../../.."
+source ~/bin/acd_func.sh
+
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+set -o ignoreeof
